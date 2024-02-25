@@ -52,45 +52,25 @@
     </div>
 
     <script>
-      let guitars = [
-        {
-          Builder: "Yamaha",
-          Model: "Y22",
-          Type: "classical",
-          Black_Wood: "yes",
-          Top_Wood: "yes",
-        },
-        {
-          Builder: "Fender",
-          Model: "A22",
-          Type: "jazz",
-          Black_Wood: "yes",
-          Top_Wood: "No",
-        },
-        {
-          Builder: "Jackson",
-          Model: "Z22",
-          Type: "electric",
-          Black_Wood: "No",
-          Top_Wood: "yes",
-        },
-        {
-          Builder: "Yamaha",
-          Model: "C22",
-          Type: "telecaster",
-          Black_Wood: "No",
-          Top_Wood: "yes",
-        },
-        {
-          Builder: "Fender",
-          Model: "K22",
-          Type: "classical",
-          Black_Wood: "yes",
-          Top_Wood: "no",
-        },
-      ];
+      let guitars = [];
+      let host = "http://localhost:8080";
 
-      function search() {
+      async function getAll() {
+        return fetch(host + "/getall")
+        .then(response => response.json())
+        .catch(error => {
+          console.log(error);
+          alert("Something went wrong!");
+          return [];
+        });
+      }
+
+      async function search() {
+
+        if(guitars.length == 0) {
+            guitars = await getAll();
+           }
+
         let guitarBuilder = document
           .getElementById("builder")
           .value.toLowerCase();
