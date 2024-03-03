@@ -53,9 +53,9 @@
     </div>
 
     <script>
-      let guitar = [];
+      let host = "http://localhost:8080";
 
-      function addGuitar() {
+      async function addGuitar() {
         const serialNumber = document.getElementById("serialNumber").value;
         const price = document.getElementById("price").value;
         const builder = document.getElementById("builder").value;
@@ -63,6 +63,12 @@
         const type = document.getElementById("type").value;
         const blackWood = document.getElementById("blackWood").value;
         const topWood = document.getElementById("topWood").value;
+
+      if(serialNumber === "" || price === "" || builder === "" || model === "" || type === "" || blackWood === "" || topWood === ""){
+      
+        alert("Please fill all the fields")
+
+      }else{
 
         const newGuitar = {
           serialNumber,
@@ -73,11 +79,26 @@
           blackWood,
           topWood,
         };
+        let request = {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(newGuitar)
+                };
+                let response = await fetch(host + "/add", request);
+                if(response.status == 200) {
+                  message = "The guitar was added to the system";
+                } else {
+                  console.log(response);
+                  message = "Something went wrong. Please try again or contact the customer support team.";
+                }
 
+                alert(message);
         guitar.push(newGuitar);
 
-        // Display JSON data in a popup message
         alert(JSON.stringify(newGuitar));
+      }
       }
     </script>
   </body>
